@@ -1,15 +1,21 @@
-from datetime import datetime
-
 import pandas as pd
 
 
-def load_excel():
-    df = pd.read_excel('dataset.xls')
-    df = df[(df['Category'] == 'Furniture') | (df['Category'] == 'Office Supplies')][['Order Date', 'Sales']]
-    df['Year'] = df['Order Date'].dt.year
-    df['Month'] = df['Order Date'].dt.month
-    df['Date'] = [datetime(i, j, 1) for (i, j) in zip(df['Year'], df['Month'])]
-    df = df[['Date', 'Sales']].groupby(df['Date']).sum()
+def load():
+    data = {'2014-Jan': 11093.605, '2014-Feb': 2911.382, '2014-Mar': 23179.835, '2014-Apr': 19099.911,
+            '2014-May': 14048.411, '2014-Jun': 26159.1626, '2014-Jul': 25942.259, '2014-Aug': 18699.8085,
+            '2014-Sep': 51239.7788, '2014-Oct': 19515.375, '2014-Nov': 48427.3087, '2014-Dec': 48652.4285,
+            '2015-Jan': 13548.7216, '2015-Feb': 8502.441, '2015-Mar': 28382.33, '2015-Apr': 23034.2565,
+            '2015-May': 18488.6865, '2015-Jun': 18361.926, '2015-Jul': 18394.359, '2015-Aug': 21373.7002,
+            '2015-Sep': 45578.79, '2015-Oct': 20700.0335, '2015-Nov': 52098.9625, '2015-Dec': 39287.4932,
+            '2016-Jan': 12922.425, '2016-Feb': 10719.901, '2016-Mar': 30148.023, '2016-Apr': 23859.537,
+            '2016-May': 28155.037, '2016-Jun': 23972.382, '2016-Jul': 25992.963, '2016-Aug': 21442.9723,
+            '2016-Sep': 50526.6189, '2016-Oct': 28154.371, '2016-Nov': 52270.9068, '2016-Dec': 74676.281,
+            '2017-Jan': 27238.321, '2017-Feb': 14274.1094, '2017-Mar': 25443.7308, '2017-Apr': 24138.1491,
+            '2017-May': 30694.5222, '2017-Jun': 35920.6257, '2017-Jul': 22054.49, '2017-Aug': 45501.726,
+            '2017-Sep': 60924.049, '2017-Oct': 44921.2602, '2017-Nov': 68529.052, '2017-Dec': 61844.4088}
+    df = pd.DataFrame.from_dict(data, orient="index", columns=['Sales'])
+    df.reset_index(drop=True)
+    df.index.names = ['Date']
+    df.index = pd.to_datetime(df.index)
     return df
-
-
